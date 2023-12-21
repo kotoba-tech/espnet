@@ -1,9 +1,33 @@
-#!/usr/bin/env bash
+#!/bin/bash
+#$ -l rt_AF=1
+#$ -l h_rt=5:00:00
+#$ -j y
+#$ -o outputs/
+#$ -cwd
+
+set -e
+
+# module load
+source /etc/profile.d/modules.sh
+module load cuda/11.8/11.8.0
+module load cudnn/8.9/8.9.2
+module load nccl/2.16/2.16.2-1
+module load hpcx/2.12
+
+# activate python
+cd /groups/gcd50698/fujii/work/espnet/
+source .env/bin/activate
+
+# change directory
+cd /groups/gcd50698/fujii/work/espnet/egs2/an4/asr1
+
 # Set bash to 'debug' mode, it will exit on :
 # -e 'error', -u 'undefined variable', -o ... 'error in pipeline', -x 'print commands',
 set -e
 set -u
 set -o pipefail
+
+export PATH=$PATH:/groups/gcd50698/fujii/work/espnet/egs2/an4/asr1/sph2pipe
 
 ./asr.sh \
     --lang en \
